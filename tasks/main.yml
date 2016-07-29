@@ -23,5 +23,3 @@
 - name: Renew Certification Cron Job
   cron: name="renew cert" day=1 month="*/2" minute=0 hour=0
         user="root" job="/home/{{user_name}}/certbot-auto renew --quiet --no-self-upgrade"
-
-
