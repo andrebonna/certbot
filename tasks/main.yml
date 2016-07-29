@@ -1,0 +1,27 @@
+---
+- name: install certbot
+  get_url:
+    url: https://dl.eff.org/certbot-auto
+    dest: /home/{{user_name}}/certbot-auto
+    mode: "a+x"
+
+- name: See if certification already exists
+  stat: path=/etc/letsencrypt/live/{{domain}}
+  register: cert_exist
+
+- file: path=/etc/letsencrypt/live/{{domain}} owner={{user_name}} group={{user_name}} state=directory mode=0755 recurse=yes
+  when: cert_exist|succeeded
+
+
+- name: Run Certification
+  command: /home/{{user_name}}/certbot-auto certonly --webroot -w {{server_path}} -d {{domain}} -d www.{{domain}} --email {{admin_email}} -n --agree-tos
+  become: yes
+  become_method: sudo
+  when: cert_exist|failed
+
+
+- name: Renew Certification Cron Job
+  cron: name="renew cert" day=1 month="*/2" minute=0 hour=0
+        user="root" job="/home/{{user_name}}/certbot-auto renew --quiet --no-self-upgrade"
+
+
