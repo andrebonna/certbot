@@ -9,8 +9,10 @@
   stat: path=/etc/letsencrypt/live/{{domain}}
   register: cert_exist
 
-- file: path=/etc/letsencrypt/live/{{domain}} owner={{user_name}} group={{user_name}} state=directory mode=0755 recurse=yes
+- file: path=/etc/letsencrypt/archive/{{domain}} owner={{user_name}} group={{user_name}} state=directory mode=0755 recurse=yes
   when: cert_exist|succeeded
+  become: yes
+  become_method: sudo
 
 
 - name: Run Certification
