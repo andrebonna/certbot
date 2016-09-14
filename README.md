@@ -8,7 +8,8 @@ Role Variables
 --------------
 
     user_name: _#Name of OS user_
-    domain: _#Domain to generate certificate, without WWW (it will generate cert for both, with and without WWW)_
+    domain: _#Domain to generate certificate, without WWW_
+    www_domain: _#Domain to generate certificate, with WWW_
     admin_email: _#Email for certificate_
     server_path: _#The path of your webroot (Root path of your web application where letsencrypt will challenge your server)_
     
