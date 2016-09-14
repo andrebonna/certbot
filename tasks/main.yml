@@ -13,7 +13,7 @@
   command: /home/{{user_name}}/certbot-auto certonly --webroot -w {{server_path}} -d {{domain}} -d www.{{domain}} --email {{admin_email}} -n --agree-tos
   become: yes
   become_method: sudo
-  when: cert_exist|failed
+  when: cert_exist.stat.isdir is not defined or cert_exist.stat.isdir == false
 
 - name: Change ownership of letsencrypt folder
   file: path=/etc/letsencrypt owner={{user_name}} group={{user_name}} state=directory mode=0755 recurse=yes
