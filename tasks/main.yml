@@ -9,27 +9,14 @@
   stat: path=/etc/letsencrypt/live/{{domain}}
   register: cert_exist
 
-- name: See if server folder already exists
-  stat: path={{server_path}}
-  register: server_exist
-
-- name: See if server is running
-  stat: path=/var/run/apache2/apache2.pid
-  register: server_running
-
-- name: Run Certification Inside Apache
-  command: /home/{{user_name}}/certbot-auto certonly -n --webroot -w {{server_path}} -d {{domain}} -d {{www_domain}} --email {{admin_email}} --agree-tos
-  become: yes
-  become_method: sudo
-  when: (cert_exist.stat.isdir is not defined or cert_exist.stat.isdir == false) and
-        (server_exist.stat.isdir is defined and server_exist.stat.isdir) and server_running.stat.exists
+- name: Stop Apache2
+  service: name=apache2 state=stopped
 
 - name: Run Certification Standalone
   command: /home/{{user_name}}/certbot-auto certonly -n --standalone -d {{domain}} -d {{www_domain}} --email {{admin_email}} --agree-tos
   become: yes
   become_method: sudo
-  when: (cert_exist.stat.isdir is not defined or cert_exist.stat.isdir == false) and
-        (server_exist.stat.isdir is not defined or server_exist.stat.isdir == false) and server_running.stat.exists == false
+  when: cert_exist.stat.isdir is not defined or cert_exist.stat.isdir == false
 
 - name: Change ownership of letsencrypt folder
   file: path=/etc/letsencrypt owner={{user_name}} group={{user_name}} state=directory mode=0755 recurse=yes
