@@ -1,6 +1,6 @@
 ---
-- name: Update OS
-  apt: update_cache=yes
+- name: Upgrade OS
+  apt: upgrade=dist
 
 - name: install certbot
   get_url:
