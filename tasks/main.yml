@@ -13,7 +13,7 @@
   register: cert_exist
 
 - name: See if server folder already exists
-  stat: {{server_path}}
+  stat: "{{server_path}}"
   register: server_exist
 
 - name: Run Certification Inside Apache
