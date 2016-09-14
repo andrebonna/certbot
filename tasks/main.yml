@@ -11,6 +11,7 @@
 
 - name: Stop Apache2
   service: name=apache2 state=stopped
+  ignore_errors: yes
 
 - name: Run Certification Standalone
   command: /home/{{user_name}}/certbot-auto certonly -n --standalone -d {{domain}} -d {{www_domain}} --email {{admin_email}} --agree-tos
