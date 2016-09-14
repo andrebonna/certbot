@@ -1,4 +1,7 @@
 ---
+- name: Update OS
+  apt: update_cache=yes
+
 - name: install certbot
   get_url:
     url: https://dl.eff.org/certbot-auto
