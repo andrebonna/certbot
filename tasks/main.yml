@@ -13,7 +13,7 @@
   register: cert_exist
 
 - name: Run Certification
-  command: /home/{{user_name}}/certbot-auto certonly --webroot -w {{server_path}} -d {{domain}} -d {{www_domain}} --email {{admin_email}} -n --agree-tos
+  command: /home/{{user_name}}/certbot-auto certonly -n --webroot -w {{server_path}} -d {{domain}} -d {{www_domain}} --email {{admin_email}} --agree-tos
   become: yes
   become_method: sudo
   when: cert_exist.stat.isdir is not defined or cert_exist.stat.isdir == false
